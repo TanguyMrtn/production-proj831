@@ -13,6 +13,7 @@ var cron = require('node-cron');
 var app = express();
 const {spawn} = require('child_process');
 app.use(cors());
+app.use(express.static('www'));
 
 
 // get our request parameters
