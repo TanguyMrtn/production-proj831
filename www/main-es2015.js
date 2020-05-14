@@ -1189,7 +1189,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const environment = {
     production: false,
-    url: 'https://polytech-student-api.herokuapp.com/'
+    url: 'https://polytech-student-api.herokuapp.com'
 };
 /*
  * For easier debugging in development mode, you can import the following file
