@@ -29459,10 +29459,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var _services_notes_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/notes.service */ "./src/app/services/notes.service.ts");
-/* harmony import */ var _services_screensize_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/screensize.service */ "./src/app/services/screensize.service.ts");
-/* harmony import */ var chart_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! chart.js */ "./node_modules/chart.js/dist/Chart.js");
-/* harmony import */ var chart_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(chart_js__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var d3__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! d3 */ "./node_modules/d3/index.js");
+/* harmony import */ var _services_auth_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/auth.service */ "./src/app/services/auth.service.ts");
+/* harmony import */ var _services_screensize_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../services/screensize.service */ "./src/app/services/screensize.service.ts");
+/* harmony import */ var chart_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! chart.js */ "./node_modules/chart.js/dist/Chart.js");
+/* harmony import */ var chart_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(chart_js__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var d3__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! d3 */ "./node_modules/d3/index.js");
+
 
 
 
@@ -29470,9 +29472,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 let NotesManagerPage = class NotesManagerPage {
-    constructor(screensizeService, notesService) {
+    constructor(screensizeService, notesService, authService) {
         this.screensizeService = screensizeService;
         this.notesService = notesService;
+        this.authService = authService;
         this.screensizeService.isDesktopView().subscribe(isDesktop => {
             if (this.isDesktop && !isDesktop) {
                 // Reload because our routing is out of place
@@ -29481,12 +29484,6 @@ let NotesManagerPage = class NotesManagerPage {
             this.isDesktop = isDesktop;
         });
     }
-    // ionViewDidEnter() {
-    // 	this.createBarChart();
-    // 	this.createHorChart();
-    // 	this.createboxplot();
-    // }
-    //@ViewChild('boxPlot',{static: false}) boxPlot;
     clickOn(ue) {
         // this.createboxplot();
         for (var i = 0; i < this.ListeUE.length; i++) {
@@ -29498,34 +29495,37 @@ let NotesManagerPage = class NotesManagerPage {
             }
         }
     }
+    logout() {
+        this.authService.logout();
+    }
     createHorChart(ue, semestreContent) {
         var coursesNames = [];
         var coursesDetails = [{
                 label: 'TP',
                 data: [],
-                backgroundColor: this.getColor(0),
-                borderColor: this.getColor(0),
+                backgroundColor: this.getColorOrange(0),
+                borderColor: this.getColorOrange(0),
                 borderWidth: 1
             },
             {
                 label: 'TD',
                 data: [],
-                backgroundColor: this.getColor(0.33),
-                borderColor: this.getColor(0.33),
+                backgroundColor: this.getColorOrange(0.33),
+                borderColor: this.getColorOrange(0.33),
                 borderWidth: 1
             },
             {
                 label: 'CM',
                 data: [],
-                backgroundColor: this.getColor(0.66),
-                borderColor: this.getColor(0.66),
+                backgroundColor: this.getColorOrange(0.66),
+                borderColor: this.getColorOrange(0.66),
                 borderWidth: 1
             },
             {
                 label: 'Autre',
                 data: [],
-                backgroundColor: this.getColor(0.99),
-                borderColor: this.getColor(0.99),
+                backgroundColor: this.getColorOrange(0.99),
+                borderColor: this.getColorOrange(0.99),
                 borderWidth: 1
             }];
         for (var element in semestreContent) {
@@ -29537,7 +29537,7 @@ let NotesManagerPage = class NotesManagerPage {
             coursesDetails[3]["data"].push(ueContent["Autre"]);
         }
         let ctx = document.getElementsByClassName("horChart" + ue)[0];
-        new chart_js__WEBPACK_IMPORTED_MODULE_4__["Chart"](ctx, {
+        new chart_js__WEBPACK_IMPORTED_MODULE_5__["Chart"](ctx, {
             type: 'bar',
             data: {
                 labels: coursesNames,
@@ -29577,7 +29577,6 @@ let NotesManagerPage = class NotesManagerPage {
                 minNotes.push(courseMean[ueCourses[matiere]]["noteMin"]);
                 maxNotes.push(courseMean[ueCourses[matiere]]["noteMax"]);
                 noteMoyenne.push(courseMean[ueCourses[matiere]]["moyenne"]);
-                console.log(noteRes);
                 for (let parcours in noteRes) {
                     if ("Semestre8" in noteRes[parcours]) {
                         let studentCourseNotes = noteRes[parcours]["Semestre8"][ueCourses[matiere]];
@@ -29606,7 +29605,7 @@ let NotesManagerPage = class NotesManagerPage {
                     {
                         label: "Note la plus basse",
                         data: minNotes,
-                        backgroundColor: "red",
+                        backgroundColor: "#FF8C89",
                         borderColor: "#FF8C89",
                         fill: false,
                         lineTension: 0,
@@ -29615,7 +29614,7 @@ let NotesManagerPage = class NotesManagerPage {
                     {
                         label: "Moyenne de la classe",
                         data: noteMoyenne,
-                        backgroundColor: "orange",
+                        backgroundColor: "#ffb38a",
                         borderColor: "#ffb38a",
                         fill: false,
                         lineTension: 0,
@@ -29624,7 +29623,7 @@ let NotesManagerPage = class NotesManagerPage {
                     {
                         label: "Note la plus haute",
                         data: maxNotes,
-                        backgroundColor: "green",
+                        backgroundColor: "lightgreen",
                         borderColor: "lightgreen",
                         fill: false,
                         lineTension: 0,
@@ -29633,7 +29632,7 @@ let NotesManagerPage = class NotesManagerPage {
                 ]
             };
             let ctx = document.getElementsByClassName("barChart" + ueValue)[0];
-            new chart_js__WEBPACK_IMPORTED_MODULE_4__["Chart"](ctx, {
+            new chart_js__WEBPACK_IMPORTED_MODULE_5__["Chart"](ctx, {
                 type: "line",
                 data: data,
                 options: {
@@ -29665,8 +29664,14 @@ let NotesManagerPage = class NotesManagerPage {
             });
         }
     }
-    getColor(t) {
-        let color = d3__WEBPACK_IMPORTED_MODULE_5__["interpolatePlasma"](t);
+    getColorBlue(t) {
+        t = 0.3 + t * 0.7;
+        let color = d3__WEBPACK_IMPORTED_MODULE_6__["interpolatePuBu"](t);
+        return color;
+    }
+    getColorOrange(t) {
+        t = 0.3 + t * 0.7;
+        let color = d3__WEBPACK_IMPORTED_MODULE_6__["interpolateOranges"](t);
         return color;
     }
     createBarChart(ue, semestreContent, largerUe) {
@@ -29696,12 +29701,12 @@ let NotesManagerPage = class NotesManagerPage {
             let sum = tpNumber + other + tdNumber + cmNumber;
             oneCours["data"] = [sum];
             let t = cpt / semestreSize;
-            oneCours["backgroundColor"] = this.getColor(t);
+            oneCours["backgroundColor"] = this.getColorBlue(t);
             cpt += 1;
             allCourses.push(oneCours);
         }
         let ctx = document.getElementsByClassName("barChartHeader" + ue)[0];
-        new chart_js__WEBPACK_IMPORTED_MODULE_4__["Chart"](ctx, {
+        new chart_js__WEBPACK_IMPORTED_MODULE_5__["Chart"](ctx, {
             type: 'horizontalBar',
             data: {
                 labels: ["Nombre de cours"],
@@ -29817,8 +29822,9 @@ let NotesManagerPage = class NotesManagerPage {
     }
 };
 NotesManagerPage.ctorParameters = () => [
-    { type: _services_screensize_service__WEBPACK_IMPORTED_MODULE_3__["ScreensizeService"] },
-    { type: _services_notes_service__WEBPACK_IMPORTED_MODULE_2__["NotesService"] }
+    { type: _services_screensize_service__WEBPACK_IMPORTED_MODULE_4__["ScreensizeService"] },
+    { type: _services_notes_service__WEBPACK_IMPORTED_MODULE_2__["NotesService"] },
+    { type: _services_auth_service__WEBPACK_IMPORTED_MODULE_3__["AuthService"] }
 ];
 tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])('linePlot', { static: false }),
@@ -29838,7 +29844,7 @@ NotesManagerPage = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./notes-manager.page.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/notes-manager/notes-manager.page.html")).default,
         styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./notes-manager.page.scss */ "./src/app/notes-manager/notes-manager.page.scss")).default]
     }),
-    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services_screensize_service__WEBPACK_IMPORTED_MODULE_3__["ScreensizeService"], _services_notes_service__WEBPACK_IMPORTED_MODULE_2__["NotesService"]])
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services_screensize_service__WEBPACK_IMPORTED_MODULE_4__["ScreensizeService"], _services_notes_service__WEBPACK_IMPORTED_MODULE_2__["NotesService"], _services_auth_service__WEBPACK_IMPORTED_MODULE_3__["AuthService"]])
 ], NotesManagerPage);
 
 

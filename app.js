@@ -8,7 +8,6 @@ var port        = process.env.PORT || 5000;
 var cors        = require('cors');
 
 var app = express();
-const {spawn} = require('child_process');
 app.use(cors());
 app.use(express.static('www'));
 
