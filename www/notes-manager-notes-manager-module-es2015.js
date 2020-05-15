@@ -29776,7 +29776,6 @@ let NotesManagerPage = class NotesManagerPage {
                 }
             }
             this.notesService.getNotes().then(notesRes => {
-                console.log(notesRes);
                 this.notesService.getAllStudentMarksSemesterFiliere().then(classRes => {
                     let studentNumber = classRes["length"];
                     let courseMean = {};
