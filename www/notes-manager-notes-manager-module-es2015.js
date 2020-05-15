@@ -29577,6 +29577,7 @@ let NotesManagerPage = class NotesManagerPage {
                 minNotes.push(courseMean[ueCourses[matiere]]["noteMin"]);
                 maxNotes.push(courseMean[ueCourses[matiere]]["noteMax"]);
                 noteMoyenne.push(courseMean[ueCourses[matiere]]["moyenne"]);
+                console.log(noteRes);
                 let studentCourseNotes = noteRes[0]["Semestre8"][ueCourses[matiere]];
                 let studentMeanNote = 0;
                 for (let note in studentCourseNotes) {
